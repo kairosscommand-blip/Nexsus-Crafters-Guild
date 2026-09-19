@@ -1,0 +1,158 @@
+# NexusCraftersGuild configuration.
+
+# How often (in ticks, 20 = 1 second) accumulated smith XP and forge stats are flushed to disk.
+# Deliberately NOT every craft -- see SmithRegistry/ForgeRegistry's own comments. Always flushed
+# once for certain on server shutdown regardless of this interval.
+persistence:
+  flush-interval-ticks: 6000 # 5 minutes
+
+# --- Blacksmithing: what a claimed forge's Crafter blocks actually do ---
+smithing:
+  xp-per-weapon: 6
+  xp-per-armor: 8
+  xp-per-tool: 4
+  # Per forge, per minute. Keeps one unattended hopper clock from instantly maxing a smith's level
+  # out -- see CrafterCraftListener's own comment on why automation is rewarded, not blocked, but
+  # still bounded.
+  xp-cap-per-forge-per-minute: 400
+  # Base Attribute bonus at STANDARD quality (0.8x at Crude, up to 2.0x at Legendary -- see QualityTier).
+  weapon-attack-bonus: 1.5
+  armor-armor-bonus: 1.0
+  armor-toughness-bonus: 0.5
+
+# --- Forges: placeable smithing businesses ---
+forge:
+  default-radius: 12
+  max-radius: 32
+  max-per-player: 1
+
+# --- Guild Contracts: standing turn-ins, always available, never time-limited ---
+contracts:
+  - id: iron-shipment
+    description: "Bring 32 iron ingots to the Guild"
+    material: IRON_INGOT
+    amount: 32
+    gold-reward: 60
+    xp-reward: 15
+    reputation-reward: 1
+  - id: coal-stockpile
+    description: "Bring 64 coal to the Guild"
+    material: COAL
+    amount: 64
+    gold-reward: 40
+    xp-reward: 10
+    reputation-reward: 1
+  - id: diamond-tribute
+    description: "Bring 8 diamonds to the Guild"
+    material: DIAMOND
+    amount: 8
+    gold-reward: 150
+    xp-reward: 40
+    reputation-reward: 3
+  - id: netherite-offering
+    description: "Bring 2 netherite ingots to the Guild"
+    material: NETHERITE_INGOT
+    amount: 2
+    gold-reward: 400
+    xp-reward: 100
+    reputation-reward: 6
+  - id: raw-iron-haul
+    description: "Bring 48 raw iron to the Guild"
+    material: RAW_IRON
+    amount: 48
+    gold-reward: 45
+    xp-reward: 12
+    reputation-reward: 1
+
+# --- World events: the ESO-style "always something happening" layer ---
+events:
+  enabled: true
+  # Checked every check-interval-ticks; each check has spawn-chance-percent odds of starting a new
+  # event, as long as fewer than max-concurrent are already active.
+  check-interval-ticks: 1200 # 1 minute
+  spawn-chance-percent: 20
+  max-concurrent: 2
+  # An event spawns somewhere between min-radius and max-radius blocks from a random online player
+  # -- never on top of them, never tied to any specific base or claim.
+  min-radius: 40
+  max-radius: 150
+
+  raider:
+    mob-count-min: 4
+    mob-count-max: 7
+    health-multiplier: 1.5
+    damage-multiplier: 1.3
+    duration-seconds: 600
+    gold-reward: 40
+    xp-reward: 30
+    reputation-reward: 3
+
+  rich-vein:
+    duration-seconds: 300
+    finder-gold-reward: 15
+    finder-xp-reward: 10
+    finder-reputation-reward: 1
+
+  caravan:
+    guard-count-min: 2
+    guard-count-max: 4
+    health-multiplier: 1.1
+    damage-multiplier: 1.0
+    duration-seconds: 420
+    clear-gold-reward: 25
+    clear-xp-reward: 20
+    clear-reputation-reward: 2
+
+  loot:
+    rich-vein:
+      items:
+        - material: IRON_INGOT
+          min: 4
+          max: 10
+          weight: 40
+        - material: GOLD_INGOT
+          min: 2
+          max: 6
+          weight: 25
+        - material: COAL
+          min: 6
+          max: 16
+          weight: 30
+        - material: RAW_IRON
+          min: 4
+          max: 10
+          weight: 30
+        - material: DIAMOND
+          min: 1
+          max: 2
+          weight: 8
+        - material: EMERALD
+          min: 1
+          max: 3
+          weight: 10
+        - material: NETHERITE_INGOT
+          min: 1
+          max: 1
+          weight: 2
+    caravan:
+      items:
+        - material: IRON_INGOT
+          min: 3
+          max: 8
+          weight: 35
+        - material: GOLD_INGOT
+          min: 2
+          max: 5
+          weight: 25
+        - material: EMERALD
+          min: 2
+          max: 5
+          weight: 20
+        - material: DIAMOND
+          min: 1
+          max: 3
+          weight: 12
+        - material: NETHERITE_INGOT
+          min: 1
+          max: 1
+          weight: 3
